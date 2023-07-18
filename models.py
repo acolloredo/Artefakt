@@ -7,6 +7,7 @@ import random
 from py4web.utils.populate import FIRST_NAMES, LAST_NAMES, IUP
 from .common import db, Field, auth
 from pydal.validators import *
+from .sample_data import add_test_data
 
 
 def get_user_email():
@@ -29,19 +30,24 @@ def get_time():
 
 db.define_table(
     'gallery',
-    Field("owner", "integer", "reference auth_user"),
+    Field("owner", "integer", "reference auth_user",
+          default=lambda: get_user_id()),
+    Field("name"),
     Field("collection_items", "list:reference collection_item")
 )
 
 db.define_table(
     'collection_item',
-    Field("owner", "integer", "reference auth_user"),
+    Field("owner", "integer", "reference auth_user",
+          default=lambda: get_user_id()),
     Field("artist"),
     Field("type"),
-    Field("creation_date", "date"),
+    Field("time_period"),
+    Field("title"),
     Field("origin"),
-    Field("status"),
-    Field("gallery", "integer", "reference gallery")
+    Field("status")
 )
+
+add_test_data()
 
 db.commit()

@@ -33,10 +33,25 @@ from .models import get_user_email
 
 url_signer = URLSigner(session)
 
+
 @action('index')
 @action.uses('index.html', db, auth, url_signer)
 def index():
     return dict(
-        # COMPLETE: return here any signed URLs you need.
-        my_callback_url = URL('my_callback', signer=url_signer),
+        get_galleries_url=URL('get_galleries', signer=url_signer),
+        get_items_url=URL('get_items', signer=url_signer)
     )
+
+
+@action('get_galleries')
+@action.uses(db, auth, url_signer, auth.user)
+def get_galleries():
+    all_galleries = db(db.gallery).select().as_list()
+    return dict(all_galleries=all_galleries)
+
+
+@action('get_items')
+@action.uses(db, auth, url_signer, auth.user)
+def get_items():
+    all_items = db(db.collection_items).select().as_list()
+    return dict(all_items=all_items)
