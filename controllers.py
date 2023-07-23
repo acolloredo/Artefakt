@@ -38,7 +38,21 @@ url_signer = URLSigner(session)
 @action.uses('index.html', db, auth, url_signer)
 def index():
     return dict(
-        get_galleries_url=URL('get_galleries', signer=url_signer),
+    )
+
+
+@action('gallery')
+@action.uses('gallery.html', db, auth, url_signer)
+def index():
+    return dict(
+        get_galleries_url=URL('get_galleries', signer=url_signer)
+    )
+
+
+@action('item')
+@action.uses('item.html', db, auth, url_signer)
+def index():
+    return dict(
         get_items_url=URL('get_items', signer=url_signer)
     )
 
@@ -47,6 +61,7 @@ def index():
 @action.uses(db, auth, url_signer, auth.user)
 def get_galleries():
     all_galleries = db(db.gallery).select().as_list()
+    print(f"***********{all_galleries}************")
     return dict(all_galleries=all_galleries)
 
 
