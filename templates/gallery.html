@@ -1,0 +1,174 @@
+[[extend 'layout.html']]
+
+<style>
+  [v-cloak] {
+    display: none;
+  }
+</style>
+
+<div
+  class="has-background-grey-darker"
+  style="height: 100%; background-size: cover"
+  id="vue-target"
+  v-cloak
+>
+  <section
+    class="hero has-background-black-ter"
+    style="position: sticky; top: 0; z-index: 1"
+  >
+    <div class="hero-body">
+      <div class="columns">
+        <div class="column is-1"></div>
+        <div class="column">
+          <div class="field">
+            <p class="control has-icons-right">
+              <input
+                class="input is-rounded is-large"
+                type="text"
+                placeholder="Search for a Gallery"
+                style="background-color: rgb(255, 250, 241)"
+                v-model="search_query"
+                @keyup="search"
+              />
+              <span class="icon is-small is-right clickable" @click="clear">
+                <i class="fa fa-times-circle"></i>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="column is-1"></div>
+      </div>
+    </div>
+  </section>
+  <div class="section" v-if="!is_displaying_search">
+    <div class="columns" v-for="group in grouped_galleries">
+      <div class="column is-4" v-for="gallery in group">
+        <div class="card">
+          <div
+            class="card-content"
+            style="height: 30vh; background-color: rgb(255, 250, 241)"
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: auto;
+                width: fit-content;
+                height: 25vh;
+              "
+            >
+              <b class="is-size-1 has-text-centered">{{gallery.name}}</b>
+            </div>
+          </div>
+          <footer
+            class="card-footer"
+            style="background-color: rgb(255, 250, 241)"
+          >
+            <a
+              @click="open_gallery_details(gallery._idx)"
+              class="card-footer-item"
+              >View Details</a
+            >
+            <a href="#" class="card-footer-item">View Items</a>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" v-if="is_displaying_search">
+    <div class="columns" v-for="group in grouped_search">
+      <div class="column is-4" v-for="gallery in group">
+        <div class="card">
+          <div
+            class="card-content"
+            style="height: 30vh; background-color: rgb(255, 250, 241)"
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: auto;
+                width: fit-content;
+                height: 25vh;
+              "
+            >
+              <b class="is-size-1 has-text-centered">{{gallery.name}}</b>
+            </div>
+          </div>
+          <footer
+            class="card-footer"
+            style="background-color: rgb(255, 250, 241)"
+          >
+            <a
+              @click="open_gallery_details(gallery._idx)"
+              class="card-footer-item"
+              >View Details</a
+            >
+            <a href="#" class="card-footer-item">View Items</a>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!------------------------------------------->
+  <!------------GALLERY VIEW MODAL------------->
+  <!------------------------------------------->
+
+  <div id="gallery_view_modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title is-1" style="text-align: center">
+          <b style="text-transform: capitalize">{{curr_gallery_name}}</b>
+        </p>
+        <button
+          class="delete"
+          aria-label="close"
+          onclick="this.closest('.modal').classList.remove('is-active')"
+        ></button>
+      </header>
+      <section
+        class="modal-card-body"
+        style="background-color: rgb(255, 250, 241)"
+      >
+        <div class="columns">
+          <div class="column" style="">
+            <p class="is-1">
+              **********Placeholder for Image/Location**********
+            </p>
+          </div>
+          <div class="column">
+            <p class="block is-1">{{curr_gallery_description}}</p>
+            <div class="container has-text-centered">
+              <button class="button has-background-grey-darker block">
+                <span style="color: rgb(255, 250, 241)">View Inventory</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <div class="container has-text-centered">
+          <button
+            class="button has-background-grey-darker"
+            style="align-self: center"
+          >
+            <span style="color: rgb(255, 250, 241)">Follow Gallery</span>
+          </button>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+  let get_galleries_url = "[[=XML(get_galleries_url)]]";
+</script>
+<script src="js/gallery.js"></script>
+[[end]]
