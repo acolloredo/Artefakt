@@ -33,6 +33,7 @@ db.define_table(
     Field("owner", "integer", "reference auth_user",
           default=lambda: get_user_id()),
     Field("name"),
+    Field("description"),
     Field("collection_items", "list:reference collection_item")
 )
 
