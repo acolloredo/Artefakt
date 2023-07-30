@@ -8,79 +8,209 @@
 
 <div
   class="has-background-grey-darker"
-  style="height: 100vh; margin: 0; padding: 0"
+  style="height: 100%; background-size: cover"
   id="vue-target"
   v-cloak
 >
-  <section class="hero has-background-grey-darker">
+  <section
+    class="hero has-background-black-ter"
+    style="position: sticky; top: 0; z-index: 1"
+  >
     <div class="hero-body">
-      <img
-        class="logo"
-        height="80%"
-        width="80%"
-        style="margin-left: auto; margin-right: auto; display: block"
-        src="images/artefakt_logo.png"
-      />
+      <div class="columns">
+        <div class="column is-1"></div>
+        <div class="column">
+          <div class="field">
+            <p class="control has-icons-right">
+              <input
+                class="input is-rounded is-large"
+                type="text"
+                placeholder="Search for an Item by Title or Artist"
+                style="background-color: rgb(255, 250, 241)"
+                v-model="search_query"
+                @keyup="search"
+              />
+              <span class="icon is-small is-right clickable" @click="clear">
+                <i class="fa fa-times-circle"></i>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="column is-1"></div>
+      </div>
     </div>
   </section>
 
-  <div class="section columns">
-    <div class="column is-1"></div>
-    <div class="column has-background-grey">
-      <div class="field">
-        <p class="control has-icons-right">
-          <input
-            class="input"
-            type="text"
-            placeholder="Search for a Gallery"
-            v-model="search_query"
-            @keyup="search"
-          />
-          <span class="icon is-small is-right clickable" @click="clear">
-            <i class="fa fa-times-circle"></i>
-          </span>
-        </p>
-      </div>
-
-      <div class="field has-addons">
-        <p class="control">
-          <button class="button">
-            <span>Gallery</span>
-          </button>
-        </p>
+  <div class="section" v-if="!is_displaying_search">
+    <div class="columns" v-for="group in grouped_items">
+      <div class="column is-4" v-for="item in group">
+        <div class="card">
+          <div
+            class="card-content"
+            style="height: 30vh; background-color: rgb(255, 250, 241)"
+          >
+            <div
+              style="
+                display: grid;
+                align-items: center;
+                text-align: center;
+                width: 100%;
+                height: 25vh;
+              "
+            >
+              <div class="columns">
+                <div class="column is-1"></div>
+                <div class="column">
+                  <b class="is-size-3 has-text-centered">{{item.title}}</b>
+                </div>
+                <div class="column is-1"></div>
+              </div>
+              <div class="columns">
+                <div class="column is-1"></div>
+                <div class="column">
+                  <i
+                    class="is-size-4 has-text-centered"
+                    v-if="item.artist != 'Unknown'"
+                    >by {{item.artist}}</i
+                  >
+                  <i
+                    class="is-size-4 has-text-centered"
+                    v-if="item.artist == 'Unknown'"
+                    >Artist Unknown</i
+                  >
+                </div>
+                <div class="column is-1"></div>
+              </div>
+            </div>
+          </div>
+          <footer
+            class="card-footer"
+            style="background-color: rgb(255, 250, 241)"
+          >
+            <a @click="open_item_details(item._idx)" class="card-footer-item"
+              >View Details</a
+            >
+          </footer>
+        </div>
       </div>
     </div>
-    <div class="column is-1"></div>
-    <div class="column has-background-grey">
-      <div class="field">
-        <p class="control has-icons-right">
-          <input
-            class="input"
-            type="text"
-            placeholder="Search for a Piece"
-            v-model="search_query"
-            @keyup="search"
-          />
-          <span class="icon is-small is-right clickable" @click="clear">
-            <i class="fa fa-times-circle"></i>
-          </span>
-        </p>
-      </div>
+  </div>
 
-      <div class="field has-addons">
-        <p class="control">
-          <button class="button">
-            <span>Pieces</span>
-          </button>
-        </p>
+  <div class="section" v-if="is_displaying_search">
+    <div class="columns" v-for="group in grouped_search">
+      <div class="column is-4" v-for="item in group">
+        <div class="card">
+          <div
+            class="card-content"
+            style="height: 30vh; background-color: rgb(255, 250, 241)"
+          >
+            <div
+              style="
+                display: grid;
+                align-items: center;
+                text-align: center;
+                width: 100%;
+                height: 25vh;
+              "
+            >
+              <div class="columns">
+                <div class="column is-1"></div>
+                <div class="column">
+                  <b class="is-size-3 has-text-centered">{{item.title}}</b>
+                </div>
+                <div class="column is-1"></div>
+              </div>
+              <div class="columns">
+                <div class="column is-1"></div>
+                <div class="column">
+                  <i
+                    class="is-size-4 has-text-centered"
+                    v-if="item.artist != 'Unknown'"
+                    >by {{item.artist}}</i
+                  >
+                  <i
+                    class="is-size-4 has-text-centered"
+                    v-if="item.artist == 'Unknown'"
+                    >Artist Unknown</i
+                  >
+                </div>
+                <div class="column is-1"></div>
+              </div>
+            </div>
+          </div>
+          <footer
+            class="card-footer"
+            style="background-color: rgb(255, 250, 241)"
+          >
+            <a @click="open_item_details(item._idx)" class="card-footer-item"
+              >View Details</a
+            >
+          </footer>
+        </div>
       </div>
     </div>
-    <div class="column is-1"></div>
+  </div>
+
+  <!------------------------------------------->
+  <!--------------ITEM VIEW MODAL-------------->
+  <!------------------------------------------->
+
+  <div id="item_view_modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title is-1" style="text-align: center">
+          <b style="text-transform: capitalize">{{curr_item_title}}</b>
+        </p>
+        <button
+          class="delete"
+          aria-label="close"
+          onclick="this.closest('.modal').classList.remove('is-active')"
+        ></button>
+      </header>
+      <section
+        class="modal-card-body"
+        style="background-color: rgb(255, 250, 241)"
+      >
+        <div class="columns">
+          <div class="column">
+            <p class="is-1">**********Placeholder for Image**********</p>
+          </div>
+          <div class="column">
+            <span><b>Title: </b><i>{{curr_item_title}}</i></span>
+            <br />
+            <span><b>Artist: </b><i>{{curr_item_artist}}</i></span>
+            <br />
+            <span
+              ><b>Type: </b
+              ><i style="text-transform: capitalize"
+                >{{curr_item_type}}</i
+              ></span
+            >
+            <br />
+            <span><b>Origin: </b><i>{{curr_item_origin}}</i></span>
+            <br />
+            <span><b>Era: </b><i>{{curr_item_time_period}}</i></span>
+            <br />
+            <span
+              ><b>Status: </b
+              ><i style="text-transform: capitalize"
+                >{{curr_item_status}}</i
+              ></span
+            >
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot"></footer>
+    </div>
   </div>
 </div>
 
 [[block page_scripts]]
 <!-- Loads the index-specific js for Vue -->
-<script></script>
-<script src="js/index.js"></script>
+<script>
+  let get_items_url = "[[=XML(get_items_url)]]";
+  let get_items_from_gallery_url = "[[=XML(get_items_from_gallery_url)]]";
+</script>
+<script src="js/item.js"></script>
 [[end]]

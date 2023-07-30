@@ -47,7 +47,7 @@ sample_items = [
         "artist": "Vincent Van Gogh",
         "type": "painting",
         "time_period": "1850-1900",
-        "title": "Starry Night",
+        "title": "Vase with Fifteen Sunflowers",
         "origin": "Europe",
         "status": "mint"
     },
@@ -108,10 +108,10 @@ sample_items = [
         "status": "mint"
     },
     {
-        "artist": "No. 5",
+        "artist": "Jackson Pollock",
         "type": "painting",
         "time_period": "1900-1950",
-        "title": "Jackson Pollock",
+        "title": "No. 5",
         "origin": "North America",
         "status": "mint"
     }
