@@ -49,6 +49,13 @@ db.define_table(
     Field("status")
 )
 
+db.define_table(
+    'user',
+    Field("uid", "integer", "reference auth_user"),
+    Field("followed_galleries", "list:reference gallery"),
+    Field("watchlist", "list:reference collection_item")
+)
+
 add_test_data()
 
 db.commit()

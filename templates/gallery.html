@@ -16,10 +16,18 @@
     class="hero has-background-black-ter"
     style="position: sticky; top: 0; z-index: 1"
   >
-    <div class="hero-body" v-if="!is_gallery_preview">
+    <div class="hero-body">
       <div class="columns">
-        <div class="column is-1"></div>
-        <div class="column">
+        <div class="column is-1" style="display: flex; align-items: center">
+          <button
+            class="button has-background-grey block"
+            v-if="is_gallery_preview"
+            @click="back_to_browse"
+          >
+            <span style="color: rgb(255, 250, 241)">Back to Browse</span>
+          </button>
+        </div>
+        <div class="column" v-if="!is_gallery_preview">
           <div class="field">
             <p class="control has-icons-right">
               <input
@@ -34,6 +42,19 @@
                 <i class="fa fa-times-circle"></i>
               </span>
             </p>
+          </div>
+        </div>
+        <div class="column" v-if="is_gallery_preview">
+          <div class="has-text-centered">
+            <h1
+              style="
+                color: rgb(255, 250, 241);
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 80px;
+              "
+            >
+              {{gallery_display_name}}
+            </h1>
           </div>
         </div>
         <div class="column is-1"></div>
@@ -72,7 +93,7 @@
               >View Details</a
             >
             <a
-              @click="get_items_from_gallery(gallery.id)"
+              @click="get_items_from_gallery(gallery.id, gallery.name)"
               class="card-footer-item"
               >View Items</a
             >
@@ -113,7 +134,7 @@
               >View Details</a
             >
             <a
-              @click="get_items_from_gallery(gallery.id)"
+              @click="get_items_from_gallery(gallery.id, gallery.name)"
               class="card-footer-item"
               >View Items</a
             >

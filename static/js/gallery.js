@@ -31,6 +31,7 @@ let init = (app) => {
         // GALLERY PREVIEW DATA
         is_gallery_preview: false,
         gallery_id: 0,
+        gallery_display_name: "",
         gallery_inventory: [],
         grouped_gallery_inventory: [],
         /////////////////////////////
@@ -105,8 +106,11 @@ let init = (app) => {
         app.vue.grouped_search = app.group_arr(app.vue.search_galleries);
     };
 
-    app.get_items_from_gallery = (gallery_id) => {
+    app.get_items_from_gallery = (gallery_id, gallery_name) => {
+        console.log("Gallery ID: ", gallery_id)
+        console.log("Gallery Name: ", gallery_name)
         app.vue.gallery_id = gallery_id
+        app.vue.gallery_display_name = gallery_name
         axios.get(get_items_from_gallery_url, {
             params: { gallery_id: app.vue.gallery_id },
         }).then((res) => {
@@ -133,13 +137,25 @@ let init = (app) => {
         app.vue.search_query = "";
     };
 
+    app.back_to_browse = () => {
+        app.vue.is_gallery_preview = false
+        app.vue.gallery_id = 0
+        app.vue.gallery_display_name = ""
+        app.vue.gallery_inventory = []
+        app.vue.grouped_gallery_inventory = []
+
+        app.vue.search_query = ""
+        app.vue.is_displaying_search = false
+    }
+
     // This contains all the methods.
     app.methods = {
         open_gallery_details: app.open_gallery_details,
         search: app.search,
         clear: app.clear,
         open_item_details: app.open_item_details,
-        get_items_from_gallery: app.get_items_from_gallery
+        get_items_from_gallery: app.get_items_from_gallery,
+        back_to_browse: app.back_to_browse
     };
 
     // This creates the Vue instance.
