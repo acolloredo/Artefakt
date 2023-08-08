@@ -17,8 +17,10 @@ let init = (app) => {
         // EXPANDED GALLERY DATA
         curr_gallery: null,
         curr_gallery_id: 0,
+        curr_gallery_idx: 0,
         curr_gallery_name: "",
         curr_gallery_description: "",
+        curr_gallery_following: false,
         ////////////////////////////
 
         // GALLERY SEARCH DATA
@@ -55,6 +57,11 @@ let init = (app) => {
         return a;
     };
 
+    app.add_follow_status = (a) => {
+        a.map((e) => {Vue.set(e, 'is_following', true);});
+        return a
+    }
+
     app.group_arr = (arr) => {
         console.log("grouping")
         let group = []
@@ -75,7 +82,7 @@ let init = (app) => {
 
     app.get_galleries = () => {
         axios.get(get_galleries_url).then((res) => {
-            app.vue.all_galleries = app.enumerate(res.data.all_galleries);
+            app.vue.all_galleries = app.add_follow_status(app.enumerate(res.data.all_galleries));
             app.vue.grouped_galleries = app.group_arr(app.vue.all_galleries);
         });
     };
@@ -85,6 +92,8 @@ let init = (app) => {
         app.vue.curr_gallery_id = app.vue.curr_gallery.id
         app.vue.curr_gallery_name = app.vue.curr_gallery.name
         app.vue.curr_gallery_description = app.vue.curr_gallery.description
+        app.vue.curr_gallery_following = app.vue.curr_gallery.is_following
+        app.vue.curr_gallery_idx = app.vue.curr_gallery._idx
         document.getElementById("gallery_view_modal").classList.add("is-active");
     }
 
@@ -148,6 +157,20 @@ let init = (app) => {
         app.vue.is_displaying_search = false
     }
 
+    app.follow_gallery = (g_idx) => {
+        console.log("g_idx: ", g_idx)
+        console.log("gallery: ", app.vue.all_galleries[g_idx])
+        gallery_id = app.vue.all_galleries[g_idx].id
+        axios.post(follow_gallery_url, {gallery_id: gallery_id}).then((res) => {
+            Vue.set(app.vue.all_galleries[g_idx], 'is_following', true);
+            if (app.vue.search_galleries[g_idx]){
+                Vue.set(app.vue.search_galleries[g_idx], 'is_following', true);
+            }
+            app.vue.curr_gallery_following = true
+            console.log("followed: ", app.vue.curr_gallery_name)
+        })
+    }
+
     // This contains all the methods.
     app.methods = {
         open_gallery_details: app.open_gallery_details,
@@ -155,7 +178,8 @@ let init = (app) => {
         clear: app.clear,
         open_item_details: app.open_item_details,
         get_items_from_gallery: app.get_items_from_gallery,
-        back_to_browse: app.back_to_browse
+        back_to_browse: app.back_to_browse,
+        follow_gallery: app.follow_gallery 
     };
 
     // This creates the Vue instance.

@@ -241,8 +241,18 @@
           <button
             class="button has-background-grey-darker"
             style="align-self: center"
+            @click="follow_gallery(curr_gallery_idx)"
           >
-            <span style="color: rgb(255, 250, 241)">Follow Gallery</span>
+            <span
+              style="color: rgb(255, 250, 241)"
+              v-if="curr_gallery_following"
+              >Follow Gallery</span
+            >
+            <span
+              style="color: rgb(255, 250, 241)"
+              v-if="!curr_gallery_following"
+              >Following</span
+            >
           </button>
         </div>
       </footer>
@@ -309,6 +319,7 @@
 <script>
   let get_galleries_url = "[[=XML(get_galleries_url)]]";
   let get_items_from_gallery_url = "[[=XML(get_items_from_gallery_url)]]";
+  let follow_gallery_url = "[[=XML(follow_gallery_url)]]";
 </script>
 <script src="js/gallery.js"></script>
 [[end]]

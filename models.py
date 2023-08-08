@@ -7,6 +7,7 @@ import random
 from py4web.utils.populate import FIRST_NAMES, LAST_NAMES, IUP
 from .common import db, Field, auth
 from pydal.validators import *
+from pydal.tools.tags import Tags
 from .sample_data import add_test_data
 
 
@@ -50,11 +51,15 @@ db.define_table(
 )
 
 db.define_table(
-    'user',
-    Field("uid", "integer", "reference auth_user"),
-    Field("followed_galleries", "list:reference gallery"),
-    Field("watchlist", "list:reference collection_item")
+    'inventory',
+    Field("user_id", "integer", "reference auth_user",
+          default=lambda: get_user_id()),
+    Field("followed_galleries", "list:reference gallery", default=lambda: list()),
+    Field("watchlist", "list:reference collection_item", default=lambda: list()),
 )
+
+# followed_galleries = Tags(db.auth_user, "followed_galleries")
+# watchlist = Tags(db.auth_user, "watchlist")
 
 add_test_data()
 

@@ -1,0 +1,20 @@
+[[extend 'layout.html']]
+
+<style>
+  [v-cloak] {
+    display: none;
+  }
+</style>
+
+<div
+  class="has-background-grey-darker"
+  style="height: 100%; background-size: cover"
+  id="vue-target"
+  v-cloak
+></div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script></script>
+<script src="js/profile.js"></script>
+[[end]]
