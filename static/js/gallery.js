@@ -58,7 +58,7 @@ let init = (app) => {
     };
 
     app.add_follow_status = (a) => {
-        a.map((e) => {Vue.set(e, 'is_following', true);});
+        a.map((e) => {Vue.set(e, 'is_following', false);});
         return a
     }
 

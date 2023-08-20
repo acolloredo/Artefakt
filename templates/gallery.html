@@ -242,17 +242,16 @@
             class="button has-background-grey-darker"
             style="align-self: center"
             @click="follow_gallery(curr_gallery_idx)"
+            v-if="!curr_gallery_following"
           >
-            <span
-              style="color: rgb(255, 250, 241)"
-              v-if="curr_gallery_following"
-              >Follow Gallery</span
-            >
-            <span
-              style="color: rgb(255, 250, 241)"
-              v-if="!curr_gallery_following"
-              >Following</span
-            >
+            <span style="color: rgb(255, 250, 241)">Follow Gallery</span>
+          </button>
+          <button
+            class="button is-success"
+            style="align-self: center"
+            v-if="curr_gallery_following"
+          >
+            <span style="color: rgb(255, 250, 241)">Following</span>
           </button>
         </div>
       </footer>

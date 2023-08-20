@@ -61,6 +61,6 @@ db.define_table(
 # followed_galleries = Tags(db.auth_user, "followed_galleries")
 # watchlist = Tags(db.auth_user, "watchlist")
 
-add_test_data()
+# add_test_data()
 
 db.commit()

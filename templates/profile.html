@@ -4,17 +4,202 @@
   [v-cloak] {
     display: none;
   }
+
+  .profile_section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+  }
 </style>
 
 <div
-  class="has-background-grey-darker"
-  style="height: 100%; background-size: cover"
+  class="has-background-grey-darker block"
+  style="height: 95%; background-size: cover"
   id="vue-target"
   v-cloak
-></div>
+>
+  <div class="section has-background-black-ter" style="height: 100%">
+    <div class="columns is-multiline block" style="height: 100%">
+      <div class="column is-3 has-background-grey block" style="height: 50%">
+        <div
+          class="box block profile_section"
+          style="align-items: center; background-color: rgb(255, 250, 241)"
+        >
+          <p class="is-size-1">Profile Photo Placeholder</p>
+        </div>
+      </div>
+      <div
+        class="column is-9 has-background-grey block profile_section"
+        style="height: 50%"
+      >
+        <div
+          class="box block profile_section"
+          style="
+            flex-direction: column;
+            align-items: center;
+            background-color: rgb(255, 250, 241);
+          "
+        >
+          <b class="is-size-4 block">Followed Galleries</b>
+          <div
+            class="columns block"
+            style="
+              height: 100%;
+              width: 100%;
+              overflow-y: hidden;
+              overflow-x: visible;
+            "
+          >
+            <div class="column is-one-third" v-for="g in followed_galleries">
+              <div class="card" style="height: 80%">
+                <div class="card-content" style="height: 100%">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      margin: auto;
+                      width: fit-content;
+                      height: 100%;
+                    "
+                  >
+                    <b class="is-size-3 has-text-centered">{{g.name}}</b>
+                  </div>
+                </div>
+                <footer class="card-footer" style="background-color: white">
+                  <a
+                    @click="open_gallery_details(gallery._idx)"
+                    class="card-footer-item"
+                    >View Details</a
+                  >
+                  <a
+                    @click="get_items_from_gallery(gallery.id, gallery.name)"
+                    class="card-footer-item"
+                    >View Items</a
+                  >
+                </footer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column is-3 has-background-grey block" style="height: 50%">
+        <div
+          class="box block"
+          style="height: 100%; background-color: rgb(255, 250, 241)"
+        >
+          <p
+            class="is-size-4 block"
+            style="text-align: center; font-weight: bold"
+          >
+            My Galleries
+          </p>
+          <button class="button is-success block" style="width: 100%">+</button>
+          <div class="field has-addons block" style="width: 100%">
+            <p class="control" style="width: 70%">
+              <button class="button" style="width: 100%">
+                <span>Colloredo Collections</span>
+              </button>
+            </p>
+            <p class="control" style="width: 30%">
+              <button class="button is-warning" style="width: 100%">
+                <span class="icon is-small">
+                  <i class="fa fa-pencil"></i>
+                </span>
+                <span>Edit</span>
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-9 has-background-grey block" style="height: 50%">
+        <div
+          class="box block"
+          style="
+            background-color: rgb(255, 250, 241);
+            width: 100%;
+            height: 100%;
+          "
+        >
+          <nav class="level" style="width: 100%">
+            <div class="level-left">
+              <div class="level-item" style="width: 100%"></div>
+              <div class="level-item"><b class="is-size-4">Watchlist</b></div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <div class="field">
+                  <p class="control has-icons-right">
+                    <input
+                      class="input is-rounded"
+                      type="text"
+                      placeholder="Search your Watchlist"
+                    />
+                    <span class="icon is-small is-right clickable">
+                      <i class="fa fa-times-circle"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div class="level-item" style="width: 15%"></div>
+            </div>
+          </nav>
+
+          <div style="height: 80%; overflow-x: hidden; overflow-y: visible">
+            <div class="columns" style="width: 100%; height: 50%">
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+            </div>
+            <div class="columns" style="width: 100%; height: 50%">
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+            </div>
+            <div class="columns" style="width: 100%; height: 50%">
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+              <div class="column is-3">
+                <div class="box" style="width: 100%; height: 100%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 [[block page_scripts]]
 <!-- Loads the index-specific js for Vue -->
-<script></script>
+<script>
+  let get_followed_galleries_url = "[[=XML(get_followed_galleries_url)]]";
+</script>
 <script src="js/profile.js"></script>
 [[end]]

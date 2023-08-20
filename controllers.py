@@ -42,6 +42,15 @@ def index():
     )
 
 
+@action('profile')
+@action.uses('profile.html', db, auth, url_signer)
+def profile():
+    return dict(
+        get_followed_galleries_url=URL(
+            'get_followed_galleries', signer=url_signer)
+    )
+
+
 @action('gallery')
 @action.uses('gallery.html', db, auth, url_signer)
 def gallery():
@@ -127,3 +136,25 @@ def follow_gallery():
 
     db.inventory.update_or_insert(
         db.inventory.user_id == get_user_id(), user_id=get_user_id(), followed_galleries=followed_gallery_ids)
+
+    return "ok"
+
+
+@action('get_followed_galleries')
+@action.uses(db, auth, url_signer, auth.user)
+def get_followed_galleries():
+    followed_gallery_inventory = db(db.inventory.user_id == get_user_id()).select(
+        db.inventory.followed_galleries).as_list()
+
+    print(f"*********{followed_gallery_inventory}***********")
+
+    if followed_gallery_inventory is None or len(followed_gallery_inventory) < 1:
+        db.inventory.insert()
+        followed_galleries = []
+
+    else:
+        follow_gallery_ids = followed_gallery_inventory[0]["followed_galleries"]
+        followed_galleries = db(db.gallery.id.belongs(
+            follow_gallery_ids)).select().as_list()
+
+    return dict(followed_galleries=followed_galleries)
