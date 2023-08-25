@@ -55,7 +55,9 @@ def profile():
     return dict(
         get_followed_galleries_url=URL(
             'get_followed_galleries', signer=url_signer),
-        get_owned_galleries_url=URL('get_owned_galleries', signer=url_signer)
+        get_owned_galleries_url=URL('get_owned_galleries', signer=url_signer),
+        get_items_from_gallery_url=URL(
+            'get_items_from_gallery', signer=url_signer),
     )
 
 
@@ -79,20 +81,6 @@ def item():
             'get_items_from_gallery', signer=url_signer),
         gallery_id=0
     )
-
-
-@action('item/<gallery_id:int>')
-@action.uses('item.html', db, auth)
-def item_from_gallery(gallery_id=None):
-    if gallery_id is None:
-        return item()
-    else:
-        return dict(
-            get_items_url=URL('get_items', signer=url_signer),
-            get_items_from_gallery_url=URL(
-                'get_items_from_gallery', signer=url_signer),
-            gallery_id=gallery_id
-        )
 
 
 @action('get_galleries')

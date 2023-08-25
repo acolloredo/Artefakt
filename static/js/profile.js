@@ -11,10 +11,20 @@ let init = (app) => {
     app.data = {
         // GENERAL
         is_gallery_edit: false,
+        //////////////////////
 
         // PROFILE DATA 
         followed_galleries: [],
-        owned_galleries: []
+        owned_galleries: [],
+        //////////////////////
+
+        // EDIT GALLERY DATA
+        edit_gallery: null,
+        edit_gallery_id: 0,
+        edit_gallery_idx: 0,
+        edit_gallery_name: "",
+        edit_gallery_description: "",
+        edit_gallery_inventory: [],
         //////////////////////
     };
 
@@ -38,8 +48,23 @@ let init = (app) => {
         })
     }
 
+    app.goto_gallery_edit = (g_idx) => {
+        app.vue.edit_gallery = app.vue.owned_galleries[g_idx]
+        app.vue.edit_gallery_id = app.vue.edit_gallery.id
+        app.vue.edit_gallery_name = app.vue.edit_gallery.name
+        app.vue.edit_gallery_description = app.vue.edit_gallery.description
+
+        axios.get(get_items_from_gallery_url, {
+            params: { gallery_id: app.vue.edit_gallery_id },
+        }).then((res) => {
+            app.vue.edit_gallery_inventory = app.enumerate(res.data.gallery_inventory);
+            app.vue.is_gallery_edit = true;
+        });
+    }
+
     // This contains all the methods.
     app.methods = {
+        goto_gallery_edit: app.goto_gallery_edit
     };
 
     // This creates the Vue instance.
