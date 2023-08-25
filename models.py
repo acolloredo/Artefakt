@@ -47,7 +47,9 @@ db.define_table(
     Field("time_period"),
     Field("title"),
     Field("origin"),
-    Field("status")
+    Field("condition"),
+    Field("status"),
+    Field("location")
 )
 
 db.define_table(

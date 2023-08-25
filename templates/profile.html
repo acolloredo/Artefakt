@@ -96,20 +96,26 @@
             My Galleries
           </p>
           <button class="button is-success block" style="width: 100%">+</button>
-          <div class="field has-addons block" style="width: 100%">
-            <p class="control" style="width: 70%">
-              <button class="button" style="width: 100%">
-                <span>Colloredo Collections</span>
-              </button>
-            </p>
-            <p class="control" style="width: 30%">
-              <button class="button is-warning" style="width: 100%">
-                <span class="icon is-small">
-                  <i class="fa fa-pencil"></i>
-                </span>
-                <span>Edit</span>
-              </button>
-            </p>
+          <div style="overflow-x: hidden; overflow-y: visible; height: 60%">
+            <div
+              class="field has-addons block"
+              style="width: 100%"
+              v-for="g in owned_galleries"
+            >
+              <p class="control" style="width: 70%">
+                <button class="button" style="width: 100%">
+                  <span>{{g.name}}</span>
+                </button>
+              </p>
+              <p class="control" style="width: 30%">
+                <button class="button is-warning" style="width: 100%">
+                  <span class="icon is-small">
+                    <i class="fa fa-pencil"></i>
+                  </span>
+                  <span>Edit</span>
+                </button>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -147,7 +153,15 @@
           </nav>
 
           <div style="height: 80%; overflow-x: hidden; overflow-y: visible">
-            <div class="columns" style="width: 100%; height: 50%">
+            <div
+              class="columns is-multiline"
+              style="
+                width: 100%;
+                height: 50%;
+                overflow-x: hidden;
+                overflow-y: visible;
+              "
+            >
               <div class="column is-3">
                 <div class="box" style="width: 100%; height: 100%"></div>
               </div>
@@ -200,6 +214,7 @@
 <!-- Loads the index-specific js for Vue -->
 <script>
   let get_followed_galleries_url = "[[=XML(get_followed_galleries_url)]]";
+  let get_owned_galleries_url = "[[=XML(get_owned_galleries_url)]]";
 </script>
 <script src="js/profile.js"></script>
 [[end]]

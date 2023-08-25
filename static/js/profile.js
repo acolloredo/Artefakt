@@ -9,7 +9,13 @@ let init = (app) => {
 
     // This is the Vue data.
     app.data = {
-        followed_galleries: []
+        // GENERAL
+        is_gallery_edit: false,
+
+        // PROFILE DATA 
+        followed_galleries: [],
+        owned_galleries: []
+        //////////////////////
     };
 
     app.enumerate = (a) => {
@@ -20,10 +26,16 @@ let init = (app) => {
     };
 
     app.get_followed_galleries = () => {
-        axios.get(get_followed_galleries_url).then((res) => {
+        axios.get(get_followed_galleries_url).then( (res) => {
             app.vue.followed_galleries = app.enumerate(res.data.followed_galleries);
             console.log(app.vue.followed_galleries)
         });
+    }
+
+    app.get_owned_galleries = () => {
+        axios.get(get_owned_galleries_url).then( (res) => {
+            app.vue.owned_galleries = app.enumerate(res.data.owned_galleries);
+        })
     }
 
     // This contains all the methods.
@@ -40,6 +52,7 @@ let init = (app) => {
     // And this initializes it.
     app.init = () => {
         app.get_followed_galleries()
+        app.get_owned_galleries()
     };
 
     // Call to the initializer.

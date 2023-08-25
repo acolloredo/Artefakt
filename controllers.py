@@ -42,12 +42,20 @@ def index():
     )
 
 
+@action('gallery_edit')
+@action.uses('gallery_edit.html', db, auth)
+def gallery_edit():
+    return dict(
+    )
+
+
 @action('profile')
 @action.uses('profile.html', db, auth, url_signer)
 def profile():
     return dict(
         get_followed_galleries_url=URL(
-            'get_followed_galleries', signer=url_signer)
+            'get_followed_galleries', signer=url_signer),
+        get_owned_galleries_url=URL('get_owned_galleries', signer=url_signer)
     )
 
 
@@ -158,3 +166,11 @@ def get_followed_galleries():
             follow_gallery_ids)).select().as_list()
 
     return dict(followed_galleries=followed_galleries)
+
+
+@action('get_owned_galleries')
+@action.uses(db, auth, url_signer, auth.user)
+def get_owned_galleries():
+    owned_galleries = db(db.gallery.owner == get_user_id()).select().as_list()
+
+    return dict(owned_galleries=owned_galleries)

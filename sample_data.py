@@ -15,6 +15,7 @@ from .common import db, Field, auth
 #     Field("time_period"),
 #     Field("title"),
 #     Field("origin"),
+#     Field("condition"),
 #     Field("status")
 # )
 
@@ -25,7 +26,9 @@ sample_items = [
         "time_period": "1850-1900",
         "title": "Starry Night",
         "origin": "Europe",
-        "status": "mint"
+        "condition": "mint",
+        "status": "on display",
+        "location": "room 302"
     },
     {
         "artist": "Johannes Vermeer",
@@ -33,7 +36,9 @@ sample_items = [
         "time_period": "1650-1700",
         "title": "Girl with a Pearl Earring",
         "origin": "Europe",
-        "status": "mint"
+        "condition": "mint",
+        "status": "on display",
+        "location": "room 302"
     },
     {
         "artist": "Leonardo Da Vinci",
@@ -41,7 +46,9 @@ sample_items = [
         "time_period": "1500-1550",
         "title": "Mona Lisa",
         "origin": "Europe",
-        "status": "mint"
+        "condition": "mint",
+        "status": "on display",
+        "location": "room 302"
     },
     {
         "artist": "Vincent Van Gogh",
@@ -49,7 +56,9 @@ sample_items = [
         "time_period": "1850-1900",
         "title": "Vase with Fifteen Sunflowers",
         "origin": "Europe",
-        "status": "mint"
+        "condition": "mint",
+        "status": "on display",
+        "location": "room 302"
     },
     {
         "artist": "Alexandros of Antioch",
@@ -57,7 +66,9 @@ sample_items = [
         "time_period": "Ancient",
         "title": "Venus de Milo",
         "origin": "Europe",
-        "status": "fair"
+        "condition": "fair",
+        "status": "storage",
+        "location": "n/a"
     },
     {
         "artist": "Michelangelo",
@@ -65,7 +76,9 @@ sample_items = [
         "time_period": "1500-1550",
         "title": "David",
         "origin": "Europe",
-        "status": "good"
+        "condition": "good",
+        "status": "storage",
+        "location": "n/a"
     },
     {
         "artist": "Katsushika Hokusai",
@@ -73,7 +86,9 @@ sample_items = [
         "time_period": "1800-1850",
         "title": "The Great Wave off Kanagawa",
         "origin": "Asia",
-        "status": "excellent"
+        "condition": "excellent",
+        "status": "on display",
+        "location": "room 10"
     },
     {
         "artist": "Unknown",
@@ -81,7 +96,9 @@ sample_items = [
         "time_period": "Ancient",
         "title": "Mayan Scepter",
         "origin": "South America",
-        "status": "damaged"
+        "condition": "damaged",
+        "status": "on display",
+        "location": "room 333"
     },
     {
         "artist": "Banksy",
@@ -89,7 +106,9 @@ sample_items = [
         "time_period": "2000-",
         "title": "Love is in the Bin",
         "origin": "Europe",
-        "status": "damaged"
+        "condition": "damaged",
+        "status": "on display",
+        "location": "room 302"
     },
     {
         "artist": "Grant Wood",
@@ -97,7 +116,9 @@ sample_items = [
         "time_period": "1900-1950",
         "title": "American Gothic",
         "origin": "North America",
-        "status": "excellent"
+        "condition": "excellent",
+        "status": "on display",
+        "location": "room 104"
     },
     {
         "artist": "Andy Warhol",
@@ -105,7 +126,9 @@ sample_items = [
         "time_period": "1950-2000",
         "title": "Campbell's Soup Cans",
         "origin": "North America",
-        "status": "mint"
+        "condition": "mint",
+        "status": "on display",
+        "location": "room 2"
     },
     {
         "artist": "Jackson Pollock",
@@ -113,7 +136,9 @@ sample_items = [
         "time_period": "1900-1950",
         "title": "No. 5",
         "origin": "North America",
-        "status": "mint"
+        "condition": "mint",
+        "status": "storage",
+        "location": "n/a"
     }
 ]
 
@@ -168,6 +193,7 @@ def add_items_for_testing():
             time_period=i["time_period"],
             title=i["title"],
             origin=i["origin"],
+            condition=i["condition"],
             status=i["status"]
         )
         item_ids.append(id)
