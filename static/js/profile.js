@@ -54,7 +54,7 @@ let init = (app) => {
         app.vue.edit_gallery_name = app.vue.edit_gallery.name
         app.vue.edit_gallery_description = app.vue.edit_gallery.description
 
-        axios.get(get_items_from_gallery_url, {
+        axios.get(get_gallery_inventory_url, {
             params: { gallery_id: app.vue.edit_gallery_id },
         }).then((res) => {
             app.vue.edit_gallery_inventory = app.enumerate(res.data.gallery_inventory);
@@ -62,9 +62,20 @@ let init = (app) => {
         });
     }
 
+    app.edit_gallery_details = () => {
+        axios.post(edit_gallery_details_url, {
+             gallery_id: app.vue.edit_gallery_id,
+             new_name: app.vue.edit_gallery_name,
+             new_descr: app.vue.edit_gallery_description
+        }).then(() => {
+            document.getElementById('edit_gallery_modal').classList.remove('is-active');
+        }) 
+    }
+
     // This contains all the methods.
     app.methods = {
-        goto_gallery_edit: app.goto_gallery_edit
+        goto_gallery_edit: app.goto_gallery_edit,
+        edit_gallery_details: app.edit_gallery_details
     };
 
     // This creates the Vue instance.

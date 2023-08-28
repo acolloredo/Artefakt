@@ -23,16 +23,28 @@
       <p class="is-size-8">{{edit_gallery_description}}</p>
     </div>
     <button
-      class="button is-warning block profile_section"
-      style="align-items: center; width: 100%; height: 10%"
+      class="button is-warning profile_section"
+      style="align-items: center; width: 100%; height: 7%"
+      onclick="document.getElementById('edit_gallery_modal').classList.add('is-active');"
     >
       <span>Edit Gallery</span>
     </button>
     <button
-      class="button is-success block profile_section"
-      style="align-items: center; width: 100%; height: 10%"
+      class="button block is-success profile_section"
+      style="align-items: center; width: 100%; height: 7%"
     >
       <span>Add Inventory</span>
+    </button>
+    <button
+      class="button is-rounded profile_section"
+      style="
+        align-items: center;
+        width: 100%;
+        height: 5%;
+        background-color: rgb(255, 250, 241);
+      "
+    >
+      <span>Back to Profile</span>
     </button>
   </div>
   <div class="column is-9 has-background-grey block" style="height: 100%">
@@ -90,7 +102,7 @@
                     height: 100%;
                   "
                 >
-                  <b class="is-size-3 has-text-centered">Item</b>
+                  <b class="is-size-3 has-text-centered">{{i.title}}</b>
                 </div>
               </div>
               <footer class="card-footer" style="background-color: white">

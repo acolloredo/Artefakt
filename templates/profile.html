@@ -216,7 +216,7 @@
       </div>
     </div>
 
-    [[include 'gallery_edit.html']]
+    [[include 'gallery_edit.html']] [[include 'edit_gallery_modal.html']]
 
     <!--Footer-->
     [[block page_scripts]]
@@ -224,7 +224,8 @@
     <script>
       let get_followed_galleries_url = "[[=XML(get_followed_galleries_url)]]";
       let get_owned_galleries_url = "[[=XML(get_owned_galleries_url)]]";
-      let get_items_from_gallery_url = "[[=XML(get_items_from_gallery_url)]]";
+      let get_gallery_inventory_url = "[[=XML(get_gallery_inventory_url)]]";
+      let edit_gallery_details_url = "[[=XML(edit_gallery_details_url)]]";
     </script>
     <script src="js/profile.js"></script>
     [[end]]

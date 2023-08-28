@@ -42,13 +42,6 @@ def index():
     )
 
 
-@action('gallery_edit')
-@action.uses('gallery_edit.html', db, auth)
-def gallery_edit():
-    return dict(
-    )
-
-
 @action('profile')
 @action.uses('profile.html', db, auth, url_signer)
 def profile():
@@ -56,8 +49,9 @@ def profile():
         get_followed_galleries_url=URL(
             'get_followed_galleries', signer=url_signer),
         get_owned_galleries_url=URL('get_owned_galleries', signer=url_signer),
-        get_items_from_gallery_url=URL(
-            'get_items_from_gallery', signer=url_signer),
+        get_gallery_inventory_url=URL(
+            'get_gallery_inventory', signer=url_signer),
+        edit_gallery_details_url=URL('edit_gallery_details', signer=url_signer)
     )
 
 
@@ -66,9 +60,11 @@ def profile():
 def gallery():
     return dict(
         get_galleries_url=URL('get_galleries', signer=url_signer),
-        get_items_from_gallery_url=URL(
-            'get_items_from_gallery', signer=url_signer),
-        follow_gallery_url=URL('follow_gallery', signer=url_signer)
+        get_gallery_inventory_url=URL(
+            'get_gallery_inventory', signer=url_signer),
+        follow_gallery_url=URL('follow_gallery', signer=url_signer),
+        get_followed_galleries_url=URL(
+            'get_followed_galleries', signer=url_signer),
     )
 
 
@@ -77,8 +73,8 @@ def gallery():
 def item():
     return dict(
         get_items_url=URL('get_items', signer=url_signer),
-        get_items_from_gallery_url=URL(
-            'get_items_from_gallery', signer=url_signer),
+        get_gallery_inventory_url=URL(
+            'get_gallery_inventory', signer=url_signer),
         gallery_id=0
     )
 
@@ -97,9 +93,9 @@ def get_items():
     return dict(all_items=all_items)
 
 
-@action('get_items_from_gallery')
+@action('get_gallery_inventory')
 @action.uses(db, auth, url_signer, auth.user)
-def get_items_from_gallery():
+def get_gallery_inventory():
     gallery_inventory_ids = (
         db(db.gallery.id == request.params.get("gallery_id"))
         .select(db.gallery.collection_items)
@@ -120,8 +116,6 @@ def follow_gallery():
 
     followed_galleries = db(db.inventory.user_id == get_user_id()).select(
         db.inventory.followed_galleries).as_list()
-    print(
-        f"*****************************{followed_galleries}*************************************")
 
     if followed_galleries is None or len(followed_galleries) == 0:
         followed_gallery_ids = [gallery_id]
@@ -162,3 +156,16 @@ def get_owned_galleries():
     owned_galleries = db(db.gallery.owner == get_user_id()).select().as_list()
 
     return dict(owned_galleries=owned_galleries)
+
+
+@action('edit_gallery_details', method=["GET", "POST"])
+@action.uses(db, auth, url_signer, auth.user)
+def edit_gallery_details():
+    gallery_id = request.json.get("gallery_id")
+    new_descr = request.json.get("new_descr")
+    new_name = request.json.get("new_name")
+
+    db(db.gallery.id == gallery_id).update(
+        name=new_name, description=new_descr)
+
+    return "ok"

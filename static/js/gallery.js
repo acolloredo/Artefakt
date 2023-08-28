@@ -12,6 +12,7 @@ let init = (app) => {
         // GALLERY DATA
         all_galleries: [],
         grouped_galleries: [],
+        followed_gallery_ids: [],
         //////////////////////
 
         // EXPANDED GALLERY DATA
@@ -57,11 +58,6 @@ let init = (app) => {
         return a;
     };
 
-    app.add_follow_status = (a) => {
-        a.map((e) => {Vue.set(e, 'is_following', false);});
-        return a
-    }
-
     app.group_arr = (arr) => {
         console.log("grouping")
         let group = []
@@ -82,7 +78,7 @@ let init = (app) => {
 
     app.get_galleries = () => {
         axios.get(get_galleries_url).then((res) => {
-            app.vue.all_galleries = app.add_follow_status(app.enumerate(res.data.all_galleries));
+            app.vue.all_galleries = app.enumerate(res.data.all_galleries);
             app.vue.grouped_galleries = app.group_arr(app.vue.all_galleries);
         });
     };
@@ -92,7 +88,7 @@ let init = (app) => {
         app.vue.curr_gallery_id = app.vue.curr_gallery.id
         app.vue.curr_gallery_name = app.vue.curr_gallery.name
         app.vue.curr_gallery_description = app.vue.curr_gallery.description
-        app.vue.curr_gallery_following = app.vue.curr_gallery.is_following
+        app.vue.curr_gallery_following = true ? app.vue.followed_gallery_ids.includes(app.vue.curr_gallery_id) : false
         app.vue.curr_gallery_idx = app.vue.curr_gallery._idx
         document.getElementById("gallery_view_modal").classList.add("is-active");
     }
@@ -115,12 +111,12 @@ let init = (app) => {
         app.vue.grouped_search = app.group_arr(app.vue.search_galleries);
     };
 
-    app.get_items_from_gallery = (gallery_id, gallery_name) => {
+    app.get_gallery_inventory = (gallery_id, gallery_name) => {
         console.log("Gallery ID: ", gallery_id)
         console.log("Gallery Name: ", gallery_name)
         app.vue.gallery_id = gallery_id
         app.vue.gallery_display_name = gallery_name
-        axios.get(get_items_from_gallery_url, {
+        axios.get(get_gallery_inventory_url, {
             params: { gallery_id: app.vue.gallery_id },
         }).then((res) => {
             app.vue.gallery_inventory = app.enumerate(res.data.gallery_inventory);
@@ -162,13 +158,16 @@ let init = (app) => {
         console.log("gallery: ", app.vue.all_galleries[g_idx])
         gallery_id = app.vue.all_galleries[g_idx].id
         axios.post(follow_gallery_url, {gallery_id: gallery_id}).then((res) => {
-            Vue.set(app.vue.all_galleries[g_idx], 'is_following', true);
-            if (app.vue.search_galleries[g_idx]){
-                Vue.set(app.vue.search_galleries[g_idx], 'is_following', true);
-            }
             app.vue.curr_gallery_following = true
-            console.log("followed: ", app.vue.curr_gallery_name)
+            app.vue.followed_gallery_ids.push(app.vue.curr_gallery_id)
         })
+    }
+
+    app.get_followed_galleries = () => {
+        axios.get(get_followed_galleries_url).then( (res) => {
+            app.vue.followed_gallery_ids = res.data.followed_galleries.map(g => g.id)
+            console.log(app.vue.followed_gallery_ids)
+        });
     }
 
     // This contains all the methods.
@@ -177,7 +176,7 @@ let init = (app) => {
         search: app.search,
         clear: app.clear,
         open_item_details: app.open_item_details,
-        get_items_from_gallery: app.get_items_from_gallery,
+        get_gallery_inventory: app.get_gallery_inventory,
         back_to_browse: app.back_to_browse,
         follow_gallery: app.follow_gallery 
     };
@@ -191,6 +190,7 @@ let init = (app) => {
 
     // And this initializes it.
     app.init = () => {
+        app.get_followed_galleries();
         app.get_galleries();
     };
 
